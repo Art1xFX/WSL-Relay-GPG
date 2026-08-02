@@ -1,0 +1,13 @@
+[Unit]
+Description=WSL Relay for GnuPG public key management service
+Documentation=man:keyboxd(8)
+Requires=wsl-relay-keyboxd.socket
+
+[Service]
+ExecStart=%h/.local/bin/wsl-relay-gpg keyboxd-socket
+
+StandardInput=socket
+StandardOutput=socket
+StandardError=journal
+
+CollectMode=inactive-or-failed

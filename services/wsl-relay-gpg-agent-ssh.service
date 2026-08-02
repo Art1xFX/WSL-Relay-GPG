@@ -1,0 +1,13 @@
+[Unit]
+Description=WSL Relay for GnuPG cryptographic agent (ssh-agent emulation)
+Documentation=man:gpg-agent(1) man:ssh-add(1) man:ssh-agent(1) man:ssh(1)
+Requires=wsl-relay-gpg-agent-ssh.socket
+
+[Service]
+ExecStart=%h/.local/bin/wsl-relay-gpg agent-ssh-socket
+
+StandardInput=socket
+StandardOutput=socket
+StandardError=journal
+
+CollectMode=inactive-or-failed

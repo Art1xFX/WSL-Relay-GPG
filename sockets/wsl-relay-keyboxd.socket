@@ -1,0 +1,16 @@
+[Unit]
+Description=WSL Relay for GnuPG public key management service
+Documentation=man:keyboxd(8)
+
+[Socket]
+ListenStream=%t/gnupg/S.keyboxd
+
+FileDescriptorName=std
+SocketMode=0600
+DirectoryMode=0700
+
+Accept=true
+RemoveOnStop=yes
+
+[Install]
+WantedBy=sockets.target

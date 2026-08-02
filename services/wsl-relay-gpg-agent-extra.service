@@ -1,0 +1,13 @@
+[Unit]
+Description=WSL Relay for GnuPG cryptographic agent and passphrase cache (restricted)
+Documentation=man:gpg-agent(1)
+Requires=wsl-relay-gpg-agent-extra.socket
+
+[Service]
+ExecStart=%h/.local/bin/wsl-relay-gpg agent-extra-socket
+
+StandardInput=socket
+StandardOutput=socket
+StandardError=journal
+
+CollectMode=inactive-or-failed
