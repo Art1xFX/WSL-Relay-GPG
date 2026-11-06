@@ -1,0 +1,21 @@
+{
+  "useGitignore": true,
+  "enableGlobDot": true,
+  "language": "en",
+  "dictionaries": [
+    "python",
+    "python-common"
+  ],
+  "ignorePaths": [
+    "./misc/cspell",
+    ".gitignore",
+    ".prettierignore",
+    ".git",
+    ".env",
+    ".env.*",
+    ".venv",
+    ".yarn",
+    ".pnp.*",
+    "node_modules",
+  ]
+}
