@@ -6,6 +6,22 @@
     "python",
     "python-common"
   ],
+  "words": [
+    "Artiom",
+    "buildpackage",
+    "Cozlovici",
+    "debhelper",
+    "dirmngr",
+    "dpkg",
+    "gpgconf",
+    "keyboxd",
+    "libexec",
+    "npiperelay",
+    "pinentry",
+    "smartcards",
+    "Starks",
+    "YubiKeys"
+  ],
   "ignorePaths": [
     "./misc/cspell",
     ".gitignore",
