@@ -16,6 +16,10 @@ indent_size = 4
 [*.py]
 indent_size = 4
 
+[{makefile,Makefile,*.mk,rules}]
+indent_style = tab
+indent_size = 4
+
 [*.{json,jsonc}]
 indent_size = 2
 

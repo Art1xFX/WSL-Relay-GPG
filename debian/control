@@ -1,0 +1,16 @@
+Source: wsl-relay-gpg
+Section: utils
+Priority: optional
+Maintainer: Artiom Cozlovici <kozakovi4@outlook.com>
+Build-Depends: debhelper-compat (= 13)
+Standards-Version: 4.7.2
+Rules-Requires-Root: no
+Homepage: https://github.com/Art1xFX/WSL-Relay-GPG
+
+Package: wsl-relay-gpg
+Architecture: all
+Depends: gpg, ${misc:Depends}
+Description: Relay GnuPG sockets from WSL to Windows
+ systemd user socket units that expose the gpg-agent, ssh-agent, dirmngr
+ and keyboxd sockets inside WSL and forward every connection to the
+ matching socket of the Windows GnuPG installation through npiperelay.

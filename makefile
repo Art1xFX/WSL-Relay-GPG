@@ -1,96 +1,36 @@
-DIRMNGR_SOCKET_SRC=src/sockets/wsl-relay-dirmngr.socket
-DIRMNGR_SOCKET_DEST=$(HOME)/.config/systemd/user/wsl-relay-dirmngr.socket
-DIRMNGR_SERVICE_SRC=src/services/wsl-relay-dirmngr.service
-DIRMNGR_SERVICE_DEST=$(HOME)/.config/systemd/user/wsl-relay-dirmngr@.service
-KEYBOXD_SOCKET_SRC=src/sockets/wsl-relay-keyboxd.socket
-KEYBOXD_SOCKET_DEST=$(HOME)/.config/systemd/user/wsl-relay-keyboxd.socket
-KEYBOXD_SERVICE_SRC=src/services/wsl-relay-keyboxd.service
-KEYBOXD_SERVICE_DEST=$(HOME)/.config/systemd/user/wsl-relay-keyboxd@.service
-GPG_AGENT_SOCKET_SRC=src/sockets/wsl-relay-gpg-agent.socket
-GPG_AGENT_SOCKET_DEST=$(HOME)/.config/systemd/user/wsl-relay-gpg-agent.socket
-GPG_AGENT_SERVICE_SRC=src/services/wsl-relay-gpg-agent.service
-GPG_AGENT_SERVICE_DEST=$(HOME)/.config/systemd/user/wsl-relay-gpg-agent@.service
-GPG_AGENT_SSH_SOCKET_SRC=src/sockets/wsl-relay-gpg-agent-ssh.socket
-GPG_AGENT_SSH_SOCKET_DEST=$(HOME)/.config/systemd/user/wsl-relay-gpg-agent-ssh.socket
-GPG_AGENT_SSH_SERVICE_SRC=src/services/wsl-relay-gpg-agent-ssh.service
-GPG_AGENT_SSH_SERVICE_DEST=$(HOME)/.config/systemd/user/wsl-relay-gpg-agent-ssh@.service
-GPG_AGENT_EXTRA_SOCKET_SRC=src/sockets/wsl-relay-gpg-agent-extra.socket
-GPG_AGENT_EXTRA_SOCKET_DEST=$(HOME)/.config/systemd/user/wsl-relay-gpg-agent-extra.socket
-GPG_AGENT_EXTRA_SERVICE_SRC=src/services/wsl-relay-gpg-agent-extra.service
-GPG_AGENT_EXTRA_SERVICE_DEST=$(HOME)/.config/systemd/user/wsl-relay-gpg-agent-extra@.service
-GPG_AGENT_BROWSER_SOCKET_SRC=src/sockets/wsl-relay-gpg-agent-browser.socket
-GPG_AGENT_BROWSER_SOCKET_DEST=$(HOME)/.config/systemd/user/wsl-relay-gpg-agent-browser.socket
-GPG_AGENT_BROWSER_SERVICE_SRC=src/services/wsl-relay-gpg-agent-browser.service
-GPG_AGENT_BROWSER_SERVICE_DEST=$(HOME)/.config/systemd/user/wsl-relay-gpg-agent-browser@.service
+BIN_DIR = $(HOME)/.local/bin
+UNIT_DIR = $(HOME)/.config/systemd/user
 
-install: \
-	$(DIRMNGR_SOCKET_DEST) \
-	$(DIRMNGR_SERVICE_DEST) \
-	$(KEYBOXD_SOCKET_DEST) \
-	$(KEYBOXD_SERVICE_DEST) \
-	$(GPG_AGENT_SOCKET_DEST) \
-	$(GPG_AGENT_SERVICE_DEST) \
-	$(GPG_AGENT_SSH_SOCKET_DEST) \
-	$(GPG_AGENT_SSH_SERVICE_DEST) \
-	$(GPG_AGENT_EXTRA_SOCKET_DEST) \
-	$(GPG_AGENT_EXTRA_SERVICE_DEST) \
-	$(GPG_AGENT_BROWSER_SOCKET_DEST) \
-	$(GPG_AGENT_BROWSER_SERVICE_DEST) \
-	$(HOME)/.local/bin/wsl-relay-gpg
+SOCKETS = $(notdir $(wildcard src/sockets/*.socket))
+SERVICES = $(patsubst %.service,%@.service,$(notdir $(wildcard src/services/*.service)))
 
-$(HOME)/.local/bin:
-	mkdir -p $(HOME)/.local/bin
+VERSION = $(shell sed -n '1s/.*(\(.*\)).*/\1/p' debian/changelog)
+DEB = dist/wsl-relay-gpg_$(VERSION)_all.deb
 
-$(HOME)/.local/bin/wsl-relay-gpg: $(HOME)/.local/bin
-	cp src/bin/wsl-relay-gpg.sh $(HOME)/.local/bin/wsl-relay-gpg
-	chmod +x $(HOME)/.local/bin/wsl-relay-gpg
+.PHONY: install uninstall deb clean
 
-$(DIRMNGR_SOCKET_DEST):
-	cp $(DIRMNGR_SOCKET_SRC) $(DIRMNGR_SOCKET_DEST)
+install:
+	install -D -m 0755 src/bin/wsl-relay-gpg.sh $(BIN_DIR)/wsl-relay-gpg
+	install -D -m 0755 -t $(BIN_DIR) src/bin/npiperelay.exe
+	install -D -m 0644 -t $(UNIT_DIR) src/sockets/*.socket
+	for unit in src/services/*.service; do \
+		install -m 0644 $$unit $(UNIT_DIR)/$$(basename $$unit .service)@.service; \
+	done
 
-$(DIRMNGR_SERVICE_DEST):
-	cp $(DIRMNGR_SERVICE_SRC) $(DIRMNGR_SERVICE_DEST)
+uninstall:
+	rm -f $(BIN_DIR)/wsl-relay-gpg $(BIN_DIR)/npiperelay.exe
+	rm -f $(addprefix $(UNIT_DIR)/,$(SOCKETS) $(SERVICES))
 
-$(KEYBOXD_SOCKET_DEST):
-	cp $(KEYBOXD_SOCKET_SRC) $(KEYBOXD_SOCKET_DEST)
+deb: $(DEB)
 
-$(KEYBOXD_SERVICE_DEST):
-	cp $(KEYBOXD_SERVICE_SRC) $(KEYBOXD_SERVICE_DEST)
+# dpkg writes the packages to the parent directory of the clone, i.e. dist/.
+$(DEB): dist/wsl-relay-gpg
+	cd $< && dpkg-buildpackage -us -uc
 
-$(GPG_AGENT_SOCKET_DEST):
-	cp $(GPG_AGENT_SOCKET_SRC) $(GPG_AGENT_SOCKET_DEST)
-
-$(GPG_AGENT_SERVICE_DEST):
-	cp $(GPG_AGENT_SERVICE_SRC) $(GPG_AGENT_SERVICE_DEST)
-
-$(GPG_AGENT_SSH_SOCKET_DEST):
-	cp $(GPG_AGENT_SSH_SOCKET_SRC) $(GPG_AGENT_SSH_SOCKET_DEST)
-
-$(GPG_AGENT_SSH_SERVICE_DEST):
-	cp $(GPG_AGENT_SSH_SERVICE_SRC) $(GPG_AGENT_SSH_SERVICE_DEST)
-
-$(GPG_AGENT_EXTRA_SOCKET_DEST):
-	cp $(GPG_AGENT_EXTRA_SOCKET_SRC) $(GPG_AGENT_EXTRA_SOCKET_DEST)
-
-$(GPG_AGENT_EXTRA_SERVICE_DEST):
-	cp $(GPG_AGENT_EXTRA_SERVICE_SRC) $(GPG_AGENT_EXTRA_SERVICE_DEST)
-
-$(GPG_AGENT_BROWSER_SOCKET_DEST):
-	cp $(GPG_AGENT_BROWSER_SOCKET_SRC) $(GPG_AGENT_BROWSER_SOCKET_DEST)
-
-$(GPG_AGENT_BROWSER_SERVICE_DEST):
-	cp $(GPG_AGENT_BROWSER_SERVICE_SRC) $(GPG_AGENT_BROWSER_SERVICE_DEST)
+# A clean clone of HEAD, recreated whenever a tracked file changes.
+dist/wsl-relay-gpg: $(shell git ls-files)
+	rm -rf $@
+	git clone . $@
 
 clean:
-	rm -f $(DIRMNGR_SOCKET_DEST)
-	rm -f $(DIRMNGR_SERVICE_DEST)
-	rm -f $(KEYBOXD_SOCKET_DEST)
-	rm -f $(KEYBOXD_SERVICE_DEST)
-	rm -f $(GPG_AGENT_SOCKET_DEST)
-	rm -f $(GPG_AGENT_SERVICE_DEST)
-	rm -f $(GPG_AGENT_SSH_SOCKET_DEST)
-	rm -f $(GPG_AGENT_SSH_SERVICE_DEST)
-	rm -f $(GPG_AGENT_EXTRA_SOCKET_DEST)
-	rm -f $(GPG_AGENT_EXTRA_SERVICE_DEST)
-	rm -f $(HOME)/.local/bin/wsl-relay-gpg
-	rmdir --ignore-fail-on-non-empty $(HOME)/.local/bin
+	rm -rf dist

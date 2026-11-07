@@ -364,3 +364,11 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# Debian packaging
+debian/wsl-relay-gpg/
+debian/.debhelper/
+debian/debhelper-build-stamp
+debian/files
+debian/*.substvars
+debian/*.debhelper

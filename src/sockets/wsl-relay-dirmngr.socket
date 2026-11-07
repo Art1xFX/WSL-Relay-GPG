@@ -1,6 +1,7 @@
 [Unit]
 Description=WSL Relay for GnuPG network certificate management daemon
 Documentation=man:dirmngr(8)
+Conflicts=dirmngr.socket
 
 [Socket]
 ListenStream=%t/gnupg/S.dirmngr

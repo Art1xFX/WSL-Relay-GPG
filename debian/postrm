@@ -1,0 +1,9 @@
+#!/bin/sh
+set -e
+
+if [ "$1" = remove ] && command -v deb-systemd-helper >/dev/null; then
+	deb-systemd-helper --user unmask dirmngr.socket gpg-agent.socket gpg-agent-browser.socket \
+		gpg-agent-extra.socket gpg-agent-ssh.socket keyboxd.socket
+fi
+
+#DEBHELPER#

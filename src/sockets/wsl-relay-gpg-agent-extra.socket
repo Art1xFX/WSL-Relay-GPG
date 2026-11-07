@@ -1,6 +1,7 @@
 [Unit]
 Description=WSL Relay for GnuPG cryptographic agent and passphrase cache (restricted)
 Documentation=man:gpg-agent(1)
+Conflicts=gpg-agent-extra.socket
 
 [Socket]
 ListenStream=%t/gnupg/S.gpg-agent.extra

@@ -1,6 +1,7 @@
 [Unit]
 Description=WSL Relay for GnuPG cryptographic agent (ssh-agent emulation)
 Documentation=man:gpg-agent(1) man:ssh-add(1) man:ssh-agent(1) man:ssh(1)
+Conflicts=gpg-agent-ssh.socket
 
 [Socket]
 ListenStream=%t/gnupg/S.gpg-agent.ssh

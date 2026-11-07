@@ -1,6 +1,7 @@
 [Unit]
 Description=WSL Relay for GnuPG public key management service
 Documentation=man:keyboxd(8)
+Conflicts=keyboxd.socket
 
 [Socket]
 ListenStream=%t/gnupg/S.keyboxd
