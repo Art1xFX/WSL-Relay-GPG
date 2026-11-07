@@ -1,26 +1,26 @@
-DIRMNGR_SOCKET_SRC=sockets/wsl-relay-dirmngr.socket
+DIRMNGR_SOCKET_SRC=src/sockets/wsl-relay-dirmngr.socket
 DIRMNGR_SOCKET_DEST=$(HOME)/.config/systemd/user/wsl-relay-dirmngr.socket
-DIRMNGR_SERVICE_SRC=services/wsl-relay-dirmngr.service
+DIRMNGR_SERVICE_SRC=src/services/wsl-relay-dirmngr.service
 DIRMNGR_SERVICE_DEST=$(HOME)/.config/systemd/user/wsl-relay-dirmngr@.service
-KEYBOXD_SOCKET_SRC=sockets/wsl-relay-keyboxd.socket
+KEYBOXD_SOCKET_SRC=src/sockets/wsl-relay-keyboxd.socket
 KEYBOXD_SOCKET_DEST=$(HOME)/.config/systemd/user/wsl-relay-keyboxd.socket
-KEYBOXD_SERVICE_SRC=services/wsl-relay-keyboxd.service
+KEYBOXD_SERVICE_SRC=src/services/wsl-relay-keyboxd.service
 KEYBOXD_SERVICE_DEST=$(HOME)/.config/systemd/user/wsl-relay-keyboxd@.service
-GPG_AGENT_SOCKET_SRC=sockets/wsl-relay-gpg-agent.socket
+GPG_AGENT_SOCKET_SRC=src/sockets/wsl-relay-gpg-agent.socket
 GPG_AGENT_SOCKET_DEST=$(HOME)/.config/systemd/user/wsl-relay-gpg-agent.socket
-GPG_AGENT_SERVICE_SRC=services/wsl-relay-gpg-agent.service
+GPG_AGENT_SERVICE_SRC=src/services/wsl-relay-gpg-agent.service
 GPG_AGENT_SERVICE_DEST=$(HOME)/.config/systemd/user/wsl-relay-gpg-agent@.service
-GPG_AGENT_SSH_SOCKET_SRC=sockets/wsl-relay-gpg-agent-ssh.socket
+GPG_AGENT_SSH_SOCKET_SRC=src/sockets/wsl-relay-gpg-agent-ssh.socket
 GPG_AGENT_SSH_SOCKET_DEST=$(HOME)/.config/systemd/user/wsl-relay-gpg-agent-ssh.socket
-GPG_AGENT_SSH_SERVICE_SRC=services/wsl-relay-gpg-agent-ssh.service
+GPG_AGENT_SSH_SERVICE_SRC=src/services/wsl-relay-gpg-agent-ssh.service
 GPG_AGENT_SSH_SERVICE_DEST=$(HOME)/.config/systemd/user/wsl-relay-gpg-agent-ssh@.service
-GPG_AGENT_EXTRA_SOCKET_SRC=sockets/wsl-relay-gpg-agent-extra.socket
+GPG_AGENT_EXTRA_SOCKET_SRC=src/sockets/wsl-relay-gpg-agent-extra.socket
 GPG_AGENT_EXTRA_SOCKET_DEST=$(HOME)/.config/systemd/user/wsl-relay-gpg-agent-extra.socket
-GPG_AGENT_EXTRA_SERVICE_SRC=services/wsl-relay-gpg-agent-extra.service
+GPG_AGENT_EXTRA_SERVICE_SRC=src/services/wsl-relay-gpg-agent-extra.service
 GPG_AGENT_EXTRA_SERVICE_DEST=$(HOME)/.config/systemd/user/wsl-relay-gpg-agent-extra@.service
-GPG_AGENT_BROWSER_SOCKET_SRC=sockets/wsl-relay-gpg-agent-browser.socket
+GPG_AGENT_BROWSER_SOCKET_SRC=src/sockets/wsl-relay-gpg-agent-browser.socket
 GPG_AGENT_BROWSER_SOCKET_DEST=$(HOME)/.config/systemd/user/wsl-relay-gpg-agent-browser.socket
-GPG_AGENT_BROWSER_SERVICE_SRC=services/wsl-relay-gpg-agent-browser.service
+GPG_AGENT_BROWSER_SERVICE_SRC=src/services/wsl-relay-gpg-agent-browser.service
 GPG_AGENT_BROWSER_SERVICE_DEST=$(HOME)/.config/systemd/user/wsl-relay-gpg-agent-browser@.service
 
 install: \
@@ -42,7 +42,7 @@ $(HOME)/.local/bin:
 	mkdir -p $(HOME)/.local/bin
 
 $(HOME)/.local/bin/wsl-relay-gpg: $(HOME)/.local/bin
-	cp bin/wsl-relay-gpg.sh $(HOME)/.local/bin/wsl-relay-gpg
+	cp src/bin/wsl-relay-gpg.sh $(HOME)/.local/bin/wsl-relay-gpg
 	chmod +x $(HOME)/.local/bin/wsl-relay-gpg
 
 $(DIRMNGR_SOCKET_DEST):
