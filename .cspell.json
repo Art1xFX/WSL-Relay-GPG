@@ -2,10 +2,7 @@
   "useGitignore": true,
   "enableGlobDot": true,
   "language": "en",
-  "dictionaries": [
-    "python",
-    "python-common"
-  ],
+  "dictionaries": ["python", "python-common"],
   "words": [
     "Artiom",
     "buildinfo",
@@ -21,9 +18,12 @@
     "npiperelay",
     "parsechangelog",
     "pinentry",
+    "reviewdog",
+    "seccomp",
     "smartcards",
     "Starks",
     "trixie",
+    "wslpath",
     "YubiKeys"
   ],
   "ignorePaths": [

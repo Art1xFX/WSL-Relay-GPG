@@ -12,7 +12,7 @@ ListenStream=%t/gnupg/S.gpg-agent.ssh
 ExecStartPre=systemctl --user set-environment GSM_SKIP_SSH_AGENT_WORKAROUND="true"
 
 # after creating and binding the service notify environment
-# no need to test config file because service directly pass fd overwritting the config file
+# no need to test config file because service directly pass fd overwriting the config file
 ExecStartPost=systemctl --user set-environment SSH_AUTH_SOCK="%t/gnupg/S.gpg-agent.ssh"
 
 # before unbinding stop to export that we listen to socket

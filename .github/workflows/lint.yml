@@ -1,0 +1,81 @@
+name: lint
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          python-version: "3.14"
+          enable-cache: true
+          cache-local-path: ${{ github.workspace }}/.uv/cache
+          cache-dependency-glob: uv.lock
+      - name: Install dependencies
+        id: dependencies
+        run: uv sync --locked --only-group dev
+      - name: Check Python lint
+        run: uv run --no-env-file --no-sync ruff check --output-format=github .
+      - name: Check Python formatting
+        if: ${{ !cancelled() && steps.dependencies.outcome == 'success' }}
+        run: uv run --no-env-file --no-sync ruff format --check --output-format=github .
+
+  prettier:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    env:
+      YARN_ENABLE_GLOBAL_CACHE: "false"
+      YARN_CACHE_FOLDER: ${{ github.workspace }}/.yarn/cache
+      YARN_INJECT_ENVIRONMENT_FILES: /dev/null
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+      - name: Enable Yarn
+        run: |
+          npm install --global corepack
+          corepack enable
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5.1.0
+        with:
+          path: .yarn/cache
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+      - name: Install dependencies
+        run: yarn install --immutable
+      - name: Check formatting
+        id: check
+        run: yarn prettier --check .
+      - name: Prepare formatting suggestions
+        id: format
+        if: ${{ !cancelled() && github.event_name == 'pull_request' && steps.check.outcome == 'failure' }}
+        run: yarn prettier --write .
+      - name: Suggest formatting changes
+        if: ${{ !cancelled() && steps.format.outcome == 'success' }}
+        uses: reviewdog/action-suggester@4747dbc9f9e37adba0943e681cc20db466642158 # v1.21.0
+        with:
+          tool_name: prettier
+
+  cspell:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: streetsidesoftware/cspell-action@ce1816e4ce36532956ac6e983737392774b6e169 # v9.2.0
+        with:
+          config: .cspell.json
+          inline: error
+          suggestions: true
+          strict: true
+          summary: true
+          incremental_files_only: false
+          check_dot_files: true
