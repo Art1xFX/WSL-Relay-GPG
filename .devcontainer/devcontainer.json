@@ -100,12 +100,15 @@
         "ms-python.python",
         "ms-python.vscode-python-envs",
         "ms-python.vscode-pylance",
+        "ms-vscode.makefile-tools",
         "charliermarsh.ruff",
         "esbenp.prettier-vscode",
         "redhat.vscode-yaml",
         "tamasfe.even-better-toml",
         "docker.docker",
-        "EditorConfig.EditorConfig"
+        "EditorConfig.EditorConfig",
+        "GitHub.vscode-pull-request-github",
+        "github.vscode-github-actions"
         // cSpell:enable
       ]
     }
