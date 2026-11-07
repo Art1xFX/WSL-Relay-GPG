@@ -48,6 +48,9 @@ RUN arch="$(dpkg --print-architecture)" \
         # Additional utilities for AI agents and development.
         jq \
         ripgrep \
+        # Debian package build (make deb).
+        build-essential \
+        debhelper \
     && rm -rf /var/lib/apt/lists/* \
     && yq --version \
     && node --version \
