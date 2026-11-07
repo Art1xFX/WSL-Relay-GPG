@@ -8,6 +8,7 @@
   ],
   "words": [
     "Artiom",
+    "buildinfo",
     "buildpackage",
     "Cozlovici",
     "debhelper",
@@ -16,7 +17,9 @@
     "gpgconf",
     "keyboxd",
     "libexec",
+    "lintian",
     "npiperelay",
+    "parsechangelog",
     "pinentry",
     "smartcards",
     "Starks",
@@ -33,6 +36,6 @@
     ".venv",
     ".yarn",
     ".pnp.*",
-    "node_modules",
+    "node_modules"
   ]
 }
