@@ -19,9 +19,12 @@ jobs:
       # without .git and `make deb` (git ls-files, git clone) fails.
       - name: Install build dependencies
         run: |
+          echo 'deb http://deb.debian.org/debian trixie-backports main' > /etc/apt/sources.list.d/backports.list
           apt-get update
           apt-get install -y --no-install-recommends \
             ca-certificates git build-essential debhelper lintian
+          apt-get install -y --no-install-recommends -t \
+            trixie-backports golang-go
 
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 

@@ -70,9 +70,10 @@ Removing the package (`sudo apt remove wsl-relay-gpg`) unmasks the native GnuPG 
 ### Without the package
 
 Install the relay into `~/.local/bin` and `~/.config/systemd/user`, mask the native sockets and enable the relayed
-ones:
+ones. `npiperelay.exe` is built from the `src/npiperelay` submodule, which requires Go 1.26 or newer:
 
 ```sh
+git submodule update --init
 make install
 systemctl --user daemon-reload
 systemctl --user mask dirmngr.socket gpg-agent.socket gpg-agent-browser.socket \
@@ -86,7 +87,7 @@ systemctl --user enable --now wsl-relay-dirmngr.socket wsl-relay-gpg-agent.socke
 
 ## Building the package
 
-Requires `dpkg-dev` and `debhelper`:
+Requires `dpkg-dev`, `debhelper` and `golang-go` 1.26 or newer (from `trixie-backports` on Debian 13):
 
 ```sh
 make deb

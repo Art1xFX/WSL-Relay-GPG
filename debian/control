@@ -2,7 +2,7 @@ Source: wsl-relay-gpg
 Section: utils
 Priority: optional
 Maintainer: Artiom Cozlovici <kozakovi4@outlook.com>
-Build-Depends: debhelper-compat (= 13)
+Build-Depends: debhelper-compat (= 13), golang-go (>= 2:1.26~)
 Standards-Version: 4.7.2
 Rules-Requires-Root: no
 Homepage: https://github.com/Art1xFX/WSL-Relay-GPG

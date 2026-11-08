@@ -11,6 +11,7 @@
     "debhelper",
     "dirmngr",
     "dpkg",
+    "GOARCH",
     "gpgconf",
     "keyboxd",
     "libexec",
@@ -22,6 +23,7 @@
     "seccomp",
     "smartcards",
     "Starks",
+    "trimpath",
     "trixie",
     "wslpath",
     "YubiKeys"
@@ -36,6 +38,7 @@
     ".venv",
     ".yarn",
     ".pnp.*",
-    "node_modules"
+    "node_modules",
+    "src/npiperelay"
   ]
 }

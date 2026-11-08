@@ -43,6 +43,8 @@ RUN arch="$(dpkg --print-architecture)" \
     && tar -xzf "${yq_package}" \
     && install -m 0755 "${yq_binary}" /usr/local/bin/yq \
     && rm -rf "${yq_package}" "${yq_binary}" checksums \
+    # Add trixie-backports repository for installing golang-go.
+    && echo 'deb http://deb.debian.org/debian trixie-backports main' > /etc/apt/sources.list.d/backports.list \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
         # Additional utilities for AI agents and development.
@@ -51,6 +53,9 @@ RUN arch="$(dpkg --print-architecture)" \
         # Debian package build (make deb).
         build-essential \
         debhelper \
+    && apt-get install -y --no-install-recommends -t \
+        trixie-backports \
+        golang-go \
     && rm -rf /var/lib/apt/lists/* \
     && yq --version \
     && node --version \
