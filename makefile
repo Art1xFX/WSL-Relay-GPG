@@ -7,11 +7,14 @@ SERVICES = $(patsubst %.service,%@.service,$(notdir $(wildcard src/services/*.se
 VERSION = $(shell sed -n '1s/.*(\(.*\)).*/\1/p' debian/changelog)
 DEB = dist/wsl-relay-gpg_$(VERSION)_all.deb
 
-.PHONY: install uninstall deb clean
+.PHONY: build install uninstall deb clean
 
-install:
+build:
+	cd src/npiperelay && GOOS=windows GOARCH=amd64 go build -trimpath -o $(CURDIR)/build/npiperelay.exe
+
+install: build
 	install -D -m 0755 src/bin/wsl-relay-gpg.sh $(BIN_DIR)/wsl-relay-gpg
-	install -D -m 0755 -t $(BIN_DIR) src/bin/npiperelay.exe
+	install -D -m 0755 -t $(BIN_DIR) build/npiperelay.exe
 	install -D -m 0644 -t $(UNIT_DIR) src/sockets/*.socket
 	for unit in src/services/*.service; do \
 		install -m 0644 $$unit $(UNIT_DIR)/$$(basename $$unit .service)@.service; \
@@ -30,7 +33,7 @@ $(DEB): dist/wsl-relay-gpg
 # A clean clone of HEAD, recreated whenever a tracked file changes.
 dist/wsl-relay-gpg: $(shell git ls-files)
 	rm -rf $@
-	git clone . $@
+	git clone --recurse-submodules . $@
 
 clean:
-	rm -rf dist
+	rm -rf build dist
