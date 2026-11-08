@@ -1,0 +1,19 @@
+#!/usr/bin/make -f
+
+LIBEXEC = /usr/libexec/wsl-relay-gpg
+PKG = debian/wsl-relay-gpg
+UNITS = $(PKG)/usr/lib/systemd/user
+
+%:
+	dh $@ --buildsystem=none
+
+override_dh_auto_build:
+	cd src/npiperelay && GOOS=windows GOARCH=amd64 go build -trimpath -o $(CURDIR)/build/npiperelay.exe
+
+override_dh_auto_install:
+	install -D -m 0755 src/bin/wsl-relay-gpg.sh $(PKG)$(LIBEXEC)/wsl-relay-gpg
+	install -D -m 0755 -t $(PKG)$(LIBEXEC) build/npiperelay.exe
+	install -D -m 0644 -t $(UNITS) src/sockets/*.socket
+	for unit in src/services/*.service; do \
+		sed 's|%h/.local/bin|$(LIBEXEC)|' $$unit > $(UNITS)/$$(basename $$unit .service)@.service; \
+	done
